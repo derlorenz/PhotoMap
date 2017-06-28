@@ -102,7 +102,7 @@ class ExifReader():
             print("Wrong file format. Must be an image file.")
 
 
-    def get_exif_data_from_folders(self ,folders):
+    def get_exif_data_from_folders(self, folders):
         data = []
         for folder in folders:
             data.extend(self.get_exif_data_from_folder(folder))
