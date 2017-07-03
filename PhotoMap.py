@@ -1,4 +1,6 @@
 import ExifReader
+import ImageTools
+
 import argparse
 import gmplot
 import os
@@ -16,17 +18,30 @@ def initArgparse():
 
     folders = vars(args)['folder']
 
+def createFolders():
+    if not os.path.exists('website'):
+        os.makedirs('website')
+        os.makedirs('website/resized')
+
+def parse_file_names(paths):
+    filenames = []
+    for path in paths:
+        filenames.extend(path.split('/')[-1:])
+    return filenames
+
 if __name__ == '__main__':
 
     ef = ExifReader.ExifReader()
+    im = ImageTools.ImageTools()
 
     initArgparse()
+    createFolders()
 
-    #Parse the folders so Windows is happy
+    # Parse the folders so Windows is happy
     if platform.system() == 'Windows':
         correctFolders = []
         for folder in folders:
-             correctFolders.append(folder + '\\\\')
+             correctFolders.append(folder + '\\')
         print(correctFolders)
     else:
         correctFolders = folders
@@ -37,13 +52,15 @@ if __name__ == '__main__':
 
     coords = ef.get_coordinates_for_exifdata(data)
     times = ef.get_recordingtimes_from_exifdata(data)
-    images = ef.get_image_paths_from_folders(correctFolders)
+    images = im.get_image_paths_from_folders(correctFolders)
+    filenames = parse_file_names(images)
+    im.resize_image(images, "website\\resized\\", 150)
 
     x = 0
     for coord in coords:
         if coord:
-            infoContent = times[x] + " <a href=\"file://" + images[x] + "\"> Image </a>"
+            infoContent = "<p>" + times[x] + "</p> <img src=\"resized/" + filenames[x] + "\" >"
             gmap.infoWindowMarker(coord[0], coord[1], "Photo", infoWindow=True, infoContent=infoContent)
         x += 1
 
-    gmap.draw("map.html")
+    gmap.draw("website/index.html")

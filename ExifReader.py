@@ -4,11 +4,12 @@ import os
 from PIL import Image
 from PIL.ExifTags import TAGS
 
+
 class ExifReader():
     def __init__(self, debug=False):
         self.debug = debug
 
-    #Recording Times
+    # Recording Times
     def get_recordingtimes_from_folder(self, folder):
         results = []
         for file in os.listdir(folder):
@@ -32,7 +33,6 @@ class ExifReader():
     def get_coordinates_from_file(self, file):
         return self.get_coordinates(self.get_exifdata_from_file(file))
 
-
     def get_coordinates_for_folder(self, folder):
         results = []
         for file in os.listdir(folder):
@@ -51,7 +51,6 @@ class ExifReader():
         for set in data:
             results.append(self.get_coordinates(set))
         return results
-
 
     def get_coordinates(self, exifdata):
         if 'GPSInfo' in exifdata and len(exifdata['GPSInfo']) > 4:
@@ -86,7 +85,7 @@ class ExifReader():
         else:
             return None
 
-    #Exif data
+    # Exif data
     def get_exifdata_from_file(self, file):
         try:
             img = Image.open(file)
@@ -100,7 +99,6 @@ class ExifReader():
             return ret
         except(OSError):
             print("Wrong file format. Must be an image file.")
-
 
     def get_exif_data_from_folders(self, folders):
         data = []
