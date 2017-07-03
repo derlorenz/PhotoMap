@@ -7,16 +7,19 @@ import os
 import platform
 
 folders = []
+targetHeight = 150
 
 def initArgparse():
-    global folders
+    global folders, targetHeight
 
     parser = argparse.ArgumentParser(description='Generates a map with photo locations')
     parser.add_argument('-f', '--folder', help='Folder to search for images in (can be uses multiple times)', action='append')
+    parser.add_argument('-s', '--size', help='Spcecify the height the images should have after compression in px', default=150)
 
     args = parser.parse_args()
 
     folders = vars(args)['folder']
+    targetHeight = vars(args)['size']
 
 def createFolders():
     if not os.path.exists('website'):
@@ -54,7 +57,7 @@ if __name__ == '__main__':
     times = ef.get_recordingtimes_from_exifdata(data)
     images = im.get_image_paths_from_folders(correctFolders)
     filenames = parse_file_names(images)
-    im.resize_image(images, "website\\resized\\", 150)
+    im.resize_image(images, "website\\resized\\", targetHeight)
 
     x = 0
     for coord in coords:
