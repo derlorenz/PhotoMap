@@ -12,7 +12,8 @@ targetHeight = 150
 def initArgparse():
     global folders, targetHeight
 
-    parser = argparse.ArgumentParser(description='Generates a map with photo locations')
+    parser = argparse.ArgumentParser(description='Generates a map (website/index.html) with locatiions of your photos. '
+                                                 'Photos are compressed and stored in website/resized')
     parser.add_argument('-f', '--folder', help='Folder to search for images in (can be uses multiple times)', action='append')
     parser.add_argument('-s', '--size', help='Spcecify the height the images should have after compression in px', default=150)
 
